@@ -4,9 +4,11 @@ local M = {}
 -- Set the nvim-tree root directory if nvim-tree is loaded
 local function change_nvim_tree_root(dir)
     if vim.fn.exists('g:loaded_tree') and vim.g.loaded_tree then
-        -- TODO we'll probably want to put this into a pcall(), g.loaded_tree is
-        -- by no means guaranteed to be nvim-tree specific.
-        require('nvim-tree.lib').change_dir(dir)
+        local ok, nvim_tree = pcall(require, 'nvim-tree.lib')
+
+        if ok then
+            nvim_tree.change_dir(dir)
+        end
     end
 end
 
@@ -22,7 +24,7 @@ local function set_project_dir(client)
 
     local project_root = client.config.root_dir
 
-    -- TODO is this correct, that sounds like a global and we'll want to support
+    -- TODO: is this correct, that sounds like a global and we'll want to support
     -- multiple different filetypes and LSP clients being active inside a single
     -- nvim instance.
     if M.project_dir ~= project_root then

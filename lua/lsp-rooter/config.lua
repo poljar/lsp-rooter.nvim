@@ -7,7 +7,7 @@ local defaults = {
     ignore_lsp = {},
 }
 
--- TODO options validation
+-- TODO: options validation
 M.setup = function(options)
     M.options = vim.tbl_deep_extend('force', {}, defaults, options or {})
 
